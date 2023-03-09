@@ -4,7 +4,7 @@ void modalDialog(BuildContext context,
     {VoidCallback? onCameraTap, VoidCallback? onGalleryTap}){
   showModalBottomSheet(context: context, builder: (context){
     return Container(
-      height: 200,
+      height: 150,
       child: Column(
         children: [
           ListTile(
