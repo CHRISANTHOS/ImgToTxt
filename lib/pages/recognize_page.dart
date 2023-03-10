@@ -16,12 +16,16 @@ class _RecognizationPageState extends State<RecognizationPage> {
   bool isBusy = false;
   TextEditingController controller = TextEditingController();
 
-  void processImage(InputImage inputImage) {
+  void processImage(InputImage inputImage) async{
     final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
 
     setState(() {
       isBusy = true;
     });
+
+    final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
+
+    controller.text = recognizedText.text;
 
     setState(() {
       isBusy = false;
@@ -41,11 +45,20 @@ class _RecognizationPageState extends State<RecognizationPage> {
       appBar: AppBar(
         title: const Text('Recognize Text'),
       ),
-      body: isBusy == true ? const Center(child: CircularProgressIndicator(),) : TextFormField(
-        controller: controller,
-        decoration: const InputDecoration(
-          hintText: 'your text'
-        ),
+      body: isBusy == true ? const Center(child: CircularProgressIndicator(),) : Column(
+        children: [
+          TextFormField(
+            controller: controller,
+            maxLines: null,
+            keyboardType: TextInputType.multiline,
+            decoration: const InputDecoration(
+              hintText: 'your text'
+            ),
+          ),
+          TextButton(onPressed: (){
+
+          },style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.blueAccent)), child: const Text('Copy'))
+        ],
       ),
     );
   }
